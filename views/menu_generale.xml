@@ -1,0 +1,9 @@
+<odoo>
+   <!-- Menu Principal -->
+    <menuitem id="menu_fiche_demande_root"
+              name="Gestion des Demandes"
+              sequence="10"/>
+
+    <!-- Sous-menu -->
+    <menuitem id="menu_fiche_demande" name="Fiches de Demande" parent="menu_fiche_demande_root" action="action_fiche_demande"/>
+</odoo>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue Liste (Tree) -->
+    <record id="view_fiche_demande_tree" model="ir.ui.view">
+        <field name="name">fiche.demande.tree</field>
+        <field name="model">fiche.demande</field>
+        <field name="arch" type="xml">
+            <tree string="Fiches de Demande">
+                <field name="name"/>
+                <field name="prod_id"/>
+                <field name="client_id"/>
+                <field name="state"/>
+                <field name="destination"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue Formulaire (Form) -->
+    <record id="view_fiche_demande_form" model="ir.ui.view">
+        <field name="name">fiche.demande.form</field>
+        <field name="model">fiche.demande</field>
+        <field name="arch" type="xml">
+            <form string="Fiche de Demande">
+                 <header>
+                       <button
+                               name="livraison_client" type="object" string="Livraison client" class="oe_highlight"
+                               attrs="{'invisible': [('state', '!=', 'sortir_physique')]}"
+                               groups="ouverture_dossier.direction_technique_id"
+                       />
+                     <button
+                             name="action_soumis" type="object" string="Soumettre" class="oe_highlight"
+                             attrs="{'invisible': [('state', '!=', 'draft')]}"
+                     />
+                    <button
+                            name="action_transfere" type="object" string="Transferer"
+                            class="oe_highlight" attrs="{'invisible': [('state', '!=', 'submitted')]}"
+                            groups="ouverture_dossier.direction_technique_id"
+                    />
+                    <button
+                            name="action_rejeter" type="object" string="Rejeter" class="oe_highlight"
+                             attrs="{'invisible': [('state', 'not in', ['approved'])]}"
+                             groups="ouverture_dossier.direction_technique_id,ouverture_dossier.service_gestionnaire_id"
+                    />
+                    <button name="sortir_physique" type="object"
+                        string="Sortir Physique"
+                        class="oe_highlight"
+                        icon="fa-sign-out"
+                        attrs="{'invisible': [('state', '!=', 'approved')]}"
+                              groups="ouverture_dossier.service_gestionnaire_id"
+                        confirm="Êtes-vous sûr de vouloir effectuer une sortie physique ?"
+                    />
+                     <field name="state" widget="statusbar" options="{'clickable': True}" />
+                 </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="prod_id"/>
+                            <field name="client_id"/>
+                        </group>
+                        <group>
+                            <field name="demandeur"/>
+                            <field name="destination"/>
+                             <field name="demande_jointe" filename="name" widget="binary"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue Kanban -->
+    <record id="view_fiche_demande_kanban" model="ir.ui.view">
+        <field name="name">fiche.demande.kanban</field>
+        <field name="model">fiche.demande</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <field name="name" class="oe_kanban_title"/>
+                            <div>
+                                <strong>Produit :</strong>
+                                <field name="prod_id"/>
+                            </div>
+                            <div>
+                                <strong>Client :</strong>
+                                <field name="client_id"/>
+                            </div>
+                            <div>
+                                <strong>État :</strong>
+                                <field name="state"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vue Recherche (Search) -->
+    <record id="view_fiche_demande_search" model="ir.ui.view">
+        <field name="name">fiche.demande.search</field>
+        <field name="model">fiche.demande</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher une Fiche">
+                <field name="name"/>
+                <field name="prod_id"/>
+                <field name="client_id"/>
+                <filter string="Brouillon" domain="[('state', '=', 'draft')]" name="draft"/>
+                <filter string="Soumise" domain="[('state', '=', 'submitted')]" name="submitted"/>
+                <filter string="Approuvée" domain="[('state', '=', 'approved')]" name="approved"/>
+                <filter string="Rejetée" domain="[('state', '=', 'rejected')]" name="rejected"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action de Menu -->
+    <record id="action_fiche_demande" model="ir.actions.act_window">
+        <field name="name">Fiches de Demande</field>
+        <field name="res_model">fiche.demande</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+
+</odoo>
