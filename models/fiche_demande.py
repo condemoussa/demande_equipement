@@ -5,7 +5,7 @@ from odoo import api, fields, models
 
 class FicheDemande(models.Model):
     _name = "fiche.demande"
-    _description = "Fiche de Demande cogitech "
+    _description = "Fiche de Demande cogitech"
     _rec_name = "name"
     _description="Demande de materiel"
 
@@ -18,7 +18,7 @@ class FicheDemande(models.Model):
 
     def action_soumis(self):
         self.update({"state": "submitted"})
-        users = self.env["res.users"].search([('type_groups', '=', 'type4')])
+        users = self.env["res.users"].search([('type_groups', '=','type4')])
         # Création de l'e-mail pour chaque utilisateur
         for user in users:
             mail_values = {
@@ -78,7 +78,7 @@ class FicheDemande(models.Model):
         picking_type = self.env['stock.picking.type'].search([('code', '=', 'outgoing')], limit=1)
 
         if not picking_type:
-            raise ValueError("Aucun type d'opération de sortie (outgoing) trouvé !")
+            raise ValueError("Aucun type d'opération de sortie trouvé !")
 
         if not self.client_id:
             raise ValueError("Aucun client associé à cette demande !")
