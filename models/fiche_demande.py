@@ -5,7 +5,7 @@ from odoo import api, fields, models
 
 class FicheDemande(models.Model):
     _name = "fiche.demande"
-    _description = "Fiche de Demande"
+    _description = "Fiche de Demande cogitech"
     _rec_name = "name"
     _description="Demande de materiel"
 
